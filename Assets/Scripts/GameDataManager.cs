@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainGameManager : MonoBehaviour
+public class GameDataManager : MonoBehaviour
 {
-    public static MainGameManager Instance { get; private set; }
+    public static GameDataManager Instance { get; private set; }
     public Color[] gameColors = new Color[4];
 
     public Color PlayerColor { get; private set; }

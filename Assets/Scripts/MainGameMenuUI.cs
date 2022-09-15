@@ -15,13 +15,12 @@ public class MainGameMenuUI : MonoBehaviour
 
     private Color[] gameColors;    
     private Color playerColor;
-    private bool teamSelected = false;
-
+    
     public void TeamSelected(Color color)
     {
         playerColor = color;        
         
-        MainGameManager.Instance.SetColors(playerColor);
+        GameDataManager.Instance.SetColors(playerColor);
         StartGameButton.gameObject.SetActive(true);        
     }
         
@@ -36,10 +35,10 @@ public class MainGameMenuUI : MonoBehaviour
         //this will call the NewColorSelected function when the color picker have a color button clicked.
         ColorPicker.onColorChanged += TeamSelected;
 
-        if (MainGameManager.Instance != null)
+        if (GameDataManager.Instance != null)
         {
-            gameColors = MainGameManager.Instance.gameColors;
-            ColorPicker.SelectColor(MainGameManager.Instance.PlayerColor);
+            gameColors = GameDataManager.Instance.gameColors;
+            ColorPicker.SelectColor(GameDataManager.Instance.PlayerColor);
         }
     }
 }
