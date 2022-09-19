@@ -10,6 +10,8 @@ public class GameDataManager : MonoBehaviour
 
     public Color PlayerColor { get; private set; }
 
+    public int PointsTotal { get; private set; }
+    
     private void Awake()
     {
         if (Instance != null)
@@ -25,5 +27,10 @@ public class GameDataManager : MonoBehaviour
     public void SetColors(Color player)
     {
         PlayerColor = player;
+    }
+
+    public void AddPoints(int points)
+    {
+        PointsTotal += points;
     }
 }

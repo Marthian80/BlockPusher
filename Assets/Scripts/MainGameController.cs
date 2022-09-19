@@ -12,24 +12,36 @@ public class MainGameController : MonoBehaviour
     public GameObject FriendlyObstacle;
     public GameObject NeutralObstacle;
     public GameObject HostileObstacle;
+    public GameObject FixedObstacle;
+    public GameObject EndGoal;
 
-    public GameObject GameOverUI;   
+    public GameObject GameOverUI;
+    public GameObject GameWonUI;
+    public TextMeshProUGUI Points;
+    public TextMeshProUGUI Timer;
 
     public bool IsGameActive { get; private set; }
 
+    private int countDown = 60;
+
     private const float gamePiecePositionY = 1.6f;
     private const float ballPosY = 0.7f;
-    private const float xRangeMax = 38.0f;
+    private const float xRangeMax = 33.5f;
     private const float zRangeMax = 35.0f;
+    private const float yRangeEndGoal = 4.8f;
     private const int maxNumberOfObjectsOnRow = 10;
-
+        
     // Start is called before the first frame update
     void Start()
     {
-
         //GenerateObstacles();
         this.IsGameActive = true;
         GenerateGameBall();
+        if (GameDataManager.Instance != null)
+        {
+            UpdateScore();
+        }
+        StartCoroutine(UpdateCountDown());
     }       
 
     // Update is called once per frame
@@ -54,6 +66,17 @@ public class MainGameController : MonoBehaviour
         IsGameActive = false;
     }
 
+    public void GameWon()
+    {
+        GameWonUI.gameObject.SetActive(true);
+        IsGameActive = false;
+    }
+
+    public void UpdateScore()
+    {
+        Points.text = GameDataManager.Instance.PointsTotal + " Points";
+    }
+
     private void GenerateGameBall()
     {
         var posX = Random.Range(-xRangeMax, xRangeMax);
@@ -62,6 +85,29 @@ public class MainGameController : MonoBehaviour
         
 
         Instantiate(GameBall, new Vector3(posX, posY, posZ), GameBall.transform.rotation);
+    }
+
+    private IEnumerator UpdateCountDown()
+    {
+        while (IsGameActive)
+        {
+            yield return new WaitForSeconds(1);
+
+            if (countDown > 0)
+            {
+                //Spawn EndGoal every 15 seconds that scrolls down on the side of the board
+                if (countDown % 15 == 0)
+                {
+                    SpawnEndGoal();
+                }
+
+                Timer.text = (countDown--).ToString();
+            }            
+            else
+            {
+                GameOver();
+            }            
+        }
     }
 
     private void GenerateObstacles()
@@ -95,7 +141,7 @@ public class MainGameController : MonoBehaviour
             }
             xRangeMin = -xRangeMax;
         }
-    }
+    }    
 
     private Vector3 CalculatePosition(float zPosition, float xPosition = xRangeMax)
     {
@@ -112,5 +158,13 @@ public class MainGameController : MonoBehaviour
         var rand = new System.Random();
         int index = rand.Next(minRange, maxRange - exclusion.Count);
         return range.ElementAt(index);
+    }
+
+    private void SpawnEndGoal()
+    {
+        Vector3 spawnPos = new Vector3(xRangeMax, yRangeEndGoal, zRangeMax);
+
+        var endGoal = Instantiate(EndGoal, spawnPos, EndGoal.transform.rotation);
+        endGoal.GetComponent<MoveForward>().SetSpeed(5.0f);
     }
 }

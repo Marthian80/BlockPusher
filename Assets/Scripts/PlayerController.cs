@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
-{
-    private const float speed = 8.0f;
+{    
     private Rigidbody playerRigidBody;
     private MainGameController mainGameController;
 
     private const string friendlyObstacle = "FriendlyObstacle";
     private const string hostileObstacle = "HostileObstacle";
+    private const string neutralObstacle = "NeutralObstacle";
+    private const string endGoal = "EndGoal";
+    private const float yRangeMin = -0.5f;
+    private const float speed = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +27,11 @@ public class PlayerController : MonoBehaviour
         if (mainGameController != null && mainGameController.IsGameActive)
         {
             MovePlayer();
+            CheckBoundaries();
+        }
+        else if (mainGameController != null && !mainGameController.IsGameActive)
+        {
+            playerRigidBody.velocity = Vector3.zero;
         }
     }
 
@@ -35,6 +43,16 @@ public class PlayerController : MonoBehaviour
 
         playerRigidBody.AddForce(Vector3.forward * speed * verticalInput);
         playerRigidBody.AddForce(Vector3.right * speed * horizontalInput);
+    }
+
+    //When player is out of bounds, the game is over
+    private void CheckBoundaries()
+    {
+        //Check for left and right bounds
+        if (transform.position.y < yRangeMin)
+        {
+            mainGameController.GameOver();
+        }       
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -53,6 +71,10 @@ public class PlayerController : MonoBehaviour
             else if (collision.gameObject.CompareTag(hostileObstacle))
             {
                 mainGameController.GameOver();
+            }
+            else if (collision.gameObject.CompareTag(endGoal))
+            {
+                mainGameController.GameWon();
             }
         }
     }

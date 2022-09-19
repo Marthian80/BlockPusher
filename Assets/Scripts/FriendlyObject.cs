@@ -71,6 +71,6 @@ public class FriendlyObject : MonoBehaviour
     //Stop movement when no longer colliding with player
     private void OnCollisionExit(Collision collision)
     {   
-        friendlyObjectRigidBody.velocity = Vector3.zero;        
+        //friendlyObjectRigidBody.velocity = Vector3.zero;        
     }
 }
