@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
-    public Color[] gameColors = new Color[4];
+        
+    public Color[] GameColors = new Color[4];
 
     public Color PlayerColor { get; private set; }
 

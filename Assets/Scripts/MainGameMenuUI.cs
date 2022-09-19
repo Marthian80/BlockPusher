@@ -26,7 +26,7 @@ public class MainGameMenuUI : MonoBehaviour
         
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     private void Start()
@@ -37,7 +37,7 @@ public class MainGameMenuUI : MonoBehaviour
 
         if (GameDataManager.Instance != null)
         {
-            gameColors = GameDataManager.Instance.gameColors;
+            gameColors = GameDataManager.Instance.GameColors;
             ColorPicker.SelectColor(GameDataManager.Instance.PlayerColor);
         }
     }
