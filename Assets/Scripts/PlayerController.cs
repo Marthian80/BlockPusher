@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private const string neutralObstacle = "NeutralObstacle";
     private const string endGoal = "EndGoal";
     private const float yRangeMin = -0.5f;
+    private const float zRange = 39f;
+    private const float xRange = 39.5f;
     private const float speed = 5.0f;
 
     // Start is called before the first frame update
@@ -19,6 +21,10 @@ public class PlayerController : MonoBehaviour
     {
         playerRigidBody = GetComponent<Rigidbody>();
         mainGameController = GameObject.Find("Board").GetComponent<MainGameController>();
+        if (GameDataManager.Instance != null)
+        {
+            SetColor(GameDataManager.Instance.PlayerColor);
+        }
     }
 
     // Update is called once per frame
@@ -49,10 +55,14 @@ public class PlayerController : MonoBehaviour
     private void CheckBoundaries()
     {
         //Check for left and right bounds
-        if (transform.position.y < yRangeMin)
+        if (transform.position.z < -zRange || transform.position.z > zRange)
         {
             mainGameController.GameOver();
         }       
+        else if (transform.position.x < -xRange || transform.position.x > xRange)
+        {
+            mainGameController.GameOver();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -78,6 +88,14 @@ public class PlayerController : MonoBehaviour
             {
                 mainGameController.GameWon();
             }
+        }
+    }
+
+    private void SetColor(Color color)
+    {
+        foreach (var rend in gameObject.GetComponentsInChildren<Renderer>())
+        {
+            rend.material.color = color;
         }
     }
 }

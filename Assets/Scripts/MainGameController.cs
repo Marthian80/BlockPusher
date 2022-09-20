@@ -12,8 +12,7 @@ public class MainGameController : MonoBehaviour
     public GameObject EndGoal;
     public GameObject[] PointObstacles = new GameObject[3];
     public GameObject[] Obstacles = new GameObject[12];
-    public float[] xPositionsGoal = new float[2] { xRangeMax, -49.6f };
-
+    
     public GameObject GameOverUI;
     public GameObject GameWonUI;
     public TextMeshProUGUI Points;
@@ -22,6 +21,7 @@ public class MainGameController : MonoBehaviour
     //Local var for testing
     private bool IsGameActive;
 
+    private float[] xPositionsGoal = new float[2] { xRangeMax, -49.6f };
     private int countDown = 61;
 
     private const float obstaclePositionY = 0.6f;
@@ -128,17 +128,31 @@ public class MainGameController : MonoBehaviour
 
             if (countDown > 0)
             {
-                //Spawn EndGoal and Obstacles every 15 seconds that scrolls down on the side of the board
+                //Spawn EndGoal every 15 seconds
                 if (countDown % 15 == 0)
                 {
-                    SpawnEndGoal();
-                    GenerateObjects(Random.Range(1, 7), Obstacles, 12 - countDown / 10, pointsPosY);
+                    SpawnEndGoal();                    
+                }
+                //First 20 seconds spawn obstacles every 10 seconds
+                if (countDown > 40 && countDown % 10 == 0)
+                {
+                    GenerateObjects(Random.Range(2, 7), Obstacles, 12 - countDown / 10, obstaclePositionY);
                 }
                 //Spawn Points every 10 seconds, with increasing speed
                 if (countDown % 10 == 0)
                 {
-                    GenerateObjects(Random.Range(1, 5), PointObstacles, 10 - countDown / 10, obstaclePositionY);
-                }               
+                    GenerateObjects(Random.Range(3, 6), PointObstacles, 10 - countDown / 10, pointsPosY);
+                }
+                //Spawn more obstacles and points after 20 seconds
+                if (countDown < 40 && countDown > 20 && countDown % 5 == 0)
+                {
+                    GenerateObjects(Random.Range(3, 8), Obstacles, 12 - countDown / 10, obstaclePositionY);
+                }
+                //Spawn more obstacles after 40 seconds
+                if (countDown < 20 && countDown % 3 == 0)
+                {
+                    GenerateObjects(Random.Range(4, 9), Obstacles, 12 - countDown / 10, obstaclePositionY);
+                }
 
                 Timer.text = (countDown--).ToString();
             }            
