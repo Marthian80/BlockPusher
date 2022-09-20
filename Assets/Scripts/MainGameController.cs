@@ -12,14 +12,15 @@ public class MainGameController : MonoBehaviour
     public GameObject EndGoal;
     public GameObject[] PointObstacles = new GameObject[3];
     public GameObject[] Obstacles = new GameObject[12];
-    public float[] xPositionsGoal = new float[2] { xRangeMax, -xRangeMax };
+    public float[] xPositionsGoal = new float[2] { xRangeMax, -49.6f };
 
     public GameObject GameOverUI;
     public GameObject GameWonUI;
     public TextMeshProUGUI Points;
     public TextMeshProUGUI Timer;
 
-    public bool IsGameActive { get; private set; }
+    //Local var for testing
+    private bool IsGameActive;
 
     private int countDown = 61;
 
@@ -33,23 +34,21 @@ public class MainGameController : MonoBehaviour
         
     // Start is called before the first frame update
     void Start()
-    {
-        //GenerateObstacles();
-        this.IsGameActive = true;
+    {           
         GenerateGameBall();
         if (GameDataManager.Instance != null)
         {
             UpdateScore();
+            GameDataManager.Instance.StartClock();
+            GameDataManager.Instance.ActivateGame();
+        }
+        else
+        {
+            this.IsGameActive = true;
         }
         //Start scrolling game
         StartCoroutine(GeneratePointsAndObstaclesOnCount());
     }       
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void ExitGameOnClick()
     {
@@ -61,16 +60,49 @@ public class MainGameController : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void StartGameOnClick()
+    {
+        if (GameDataManager.Instance != null)
+        {
+            GameDataManager.Instance.ActivateGame();
+        }
+        StartCoroutine(GeneratePointsAndObstaclesOnCount());
+    }
+
+    public void PauseGameOnClick()
+    {
+        if (GameDataManager.Instance != null)
+        {
+            GameDataManager.Instance.SetGameInActive();
+        }
+    }
+
     public void GameOver()
     {
-        GameOverUI.gameObject.SetActive(true);        
-        IsGameActive = false;
+        GameOverUI.gameObject.SetActive(true);                
+        if (GameDataManager.Instance != null)
+        {
+            GameDataManager.Instance.SetGameInActive();
+            GameDataManager.Instance.SaveGameData();
+        }
+        else
+        {
+            this.IsGameActive = false;
+        }
     }
 
     public void GameWon()
     {
-        GameWonUI.gameObject.SetActive(true);
-        IsGameActive = false;
+        GameWonUI.gameObject.SetActive(true);        
+        if (GameDataManager.Instance != null)
+        {
+            GameDataManager.Instance.SetGameInActive();
+            GameDataManager.Instance.SaveGameData();
+        }
+        else
+        {
+            this.IsGameActive = false;
+        }
     }
 
     public void UpdateScore()
@@ -89,7 +121,8 @@ public class MainGameController : MonoBehaviour
 
     private IEnumerator GeneratePointsAndObstaclesOnCount()
     {
-        while (IsGameActive)
+        //Use local variable for quick testing
+        while (GameDataManager.Instance != null && GameDataManager.Instance.IsGameActive || this.IsGameActive)
         {
             yield return new WaitForSeconds(1);
 
@@ -168,5 +201,5 @@ public class MainGameController : MonoBehaviour
     private float CalculateXDistance(int divider)
     {
         return (xRangeMax * 2) / divider;
-    }
+    }    
 }

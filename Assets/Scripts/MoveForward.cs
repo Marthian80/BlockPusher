@@ -21,7 +21,7 @@ public class MoveForward : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!stopMoving)
+        if (!stopMoving && GameDataManager.Instance != null && GameDataManager.Instance.IsGameActive)
         {
             transform.Translate(direction * Time.deltaTime * Speed);
         }

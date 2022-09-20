@@ -24,12 +24,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mainGameController != null && mainGameController.IsGameActive)
+        if (GameDataManager.Instance != null && GameDataManager.Instance.IsGameActive)
         {
             MovePlayer();
             CheckBoundaries();
         }
-        else if (mainGameController != null && !mainGameController.IsGameActive)
+        else if (GameDataManager.Instance != null && GameDataManager.Instance.IsGameActive == false)
         {
             playerRigidBody.velocity = Vector3.zero;
         }
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (mainGameController != null && mainGameController.IsGameActive)
+        if (GameDataManager.Instance != null && GameDataManager.Instance.IsGameActive)
         {
             //Friendly objects can be pushed
             if (collision.gameObject.CompareTag(friendlyObstacle))
