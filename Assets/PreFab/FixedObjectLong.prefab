@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 3041600932549085205}
   - component: {fileID: 3041600932549085210}
   - component: {fileID: 4458376228562906810}
-  - component: {fileID: 5528567966922177691}
-  - component: {fileID: -997346430952432411}
+  - component: {fileID: -3643594061145756157}
+  - component: {fileID: 241177859489464870}
   m_Layer: 0
-  m_Name: FixedObject
+  m_Name: FixedObjectLong
   m_TagString: FixedObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 3041600932549085211}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -31.2, y: 0.6, z: -1}
-  m_LocalScale: {x: 6, y: 2, z: 2}
+  m_LocalScale: {x: 9, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -116,7 +116,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 2
---- !u!114 &5528567966922177691
+--- !u!114 &-3643594061145756157
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddbddc914e19af498f1baf86f96b3a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-997346430952432411
+--- !u!114 &241177859489464870
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

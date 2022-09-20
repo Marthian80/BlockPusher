@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
             //Friendly objects can be pushed
             if (collision.gameObject.CompareTag(friendlyObstacle))
             {
+                collision.gameObject.GetComponent<MoveForward>().StopMoving();
+
                 Rigidbody friendlyRigidbody = collision.gameObject.GetComponent<Rigidbody>();
                 Vector3 awayFromPlayer = (collision.gameObject.transform.position - transform.position);
 
